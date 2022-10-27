@@ -41,7 +41,7 @@ function counter() {
 
 
 function cacheFunction(cb) {
-    // var cb = const cb = function(x) { return x * 2; };
+    // const cb = function(x) { return x * 2; };
     // 2 -> 2*2 = 4
     // 3 -> 3*2 = 6
     // {2:4, 3:6 }
