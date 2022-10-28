@@ -1,5 +1,7 @@
 'use strict'
 
+const { queue } = require("@11ty/eleventy-cache-assets");
+
 /*
 Definir las funciones recursivas nFactorial y nFibonacci.
 
@@ -15,10 +17,28 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
+    if (Number.isInteger(n) !== true) throw new Error("Factorial solo con numeros entero");
+
+    // primero colocar una condicion de corte
+    if (n <= 1) return 1
+
+    return n * nFactorial(n - 1);
 }
 
+
+//Secuencia: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ... 
+
 function nFibonacci(n) {
+    if (n < 0 && n !== NaN) throw new Error("nFibonacci solo con numeros positivos");
+
+    if (n === 0 || n === 1) return n
+    return n < 2 ? n : nFibonacci(n - 2) + nFibonacci(n - 1);
 }
+
+// console.log(nFibonacci(0));
+// console.log(nFibonacci(6));
+// console.log(nFibonacci(9));
+// console.log(nFibonacci(2));
 
 /*
 Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde el primer elemento que ingresa es el primero que se quita. Definir los siguientes métodos:
@@ -28,16 +48,49 @@ Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde e
 
 Pueden utilizar class o función constructora.
 */
-
+/*
 function Queue() {
+    this.queue = [];
+    //this.queueSize = 0;
+}
 
+Queue.prototype.enqueue = function (dato) {
+    // ingresa en la cola
+    this.queue.push(dato);
+    // this.queueSize++;
+};
+
+Queue.prototype.dequeue = function () {
+    return this.queue.shift();
+};
+
+Queue.prototype.size = function () {
+    return this.queue.length;
+};
+*/
+class Queue {
+    constructor() {
+        this.queue = [];
+    }
+
+    enqueue(dato) {
+        this.queue.push(dato);
+    }
+
+    dequeue() {
+        return this.queue.shift();
+    }
+
+    size() {
+        return this.queue.length;
+    }
 }
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
 module.exports = {
-  Queue,
-  nFactorial,
-  nFibonacci
+    Queue,
+    nFactorial,
+    nFibonacci
 };
