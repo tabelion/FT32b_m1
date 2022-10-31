@@ -1,19 +1,109 @@
 "use strict";
 
-/*
+/* EJERCICIO 1
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
   - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular de una lista de un solo nodo y de una lista vacía);
   - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback, retorne true. 
-  Ejemplo: 
+  EJEMPLO 
   search(3) busca un nodo cuyo valor sea 3;
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
+function LinkedList() {
+    this._length = 0;
+    this.head = null;
+};
 
-function LinkedList() {}
+function Node(value) {
+    this.value = value;
+    this.next = null;
+}
 
-function Node(value) {}
+LinkedList.prototype.add = function (value) {
+    const newNode = new Node(value);
+    // si la lista esta vacia lo agrega sino busca el final de la lista 
+    if (this.head === null) {
+        this.head = newNode;
+    } else {
+        let current = this.head;
+        while (current.next) {
+            current = current.next;
+        }
+        current.next = newNode;
+    };
+    this._length++;
+}
+
+LinkedList.prototype.remove = function () {
+    //lista vacia
+    if (this.head === null) return null;
+
+    let current = this.head;
+    var result = current.value;
+
+    // 1 solo nodo
+    if (current.next === null) {
+        this.head = null;
+    } else {
+        // si tengo mas de un elemento
+        while (current.next.next) {
+            current = current.next;
+        }
+        result = current.next.value;
+        current.next = null;
+    }
+    this._length--;
+    return result;
+}
+
+LinkedList.prototype.search = function (valueOrCb) {
+    //lista vacia
+    if (!this.head) return null;
+
+    //? let nodoNro = 1;
+    var current = this.head;
+    // le hago recorrer la lista al puntero
+    while (current) {
+        // si era una funcion
+        if (typeof valueOrCb === "function") {
+            if (valueOrCb(current.value) === true) return current.value;
+        }
+        // si es dato
+        if (current.value === valueOrCb) {
+            //? return `encontre el valor ${valueOrCb} en el orden ${nodoNro}  `;
+            return valueOrCb;
+        }
+        //? nodoNro++;
+        current = current.next;
+    }
+    return null;
+}
+
+
+//let newNodo = new Node('prueba');
+let linkedList = new LinkedList();
+// tiene metodos `add`, `remove`, y `search`', function () 
+console.log(linkedList);
+linkedList.add('56');
+linkedList.add('77');
+linkedList.add('hola');
+linkedList.add('35');
+console.log(linkedList);
+console.log('busca', linkedList.search('hola'));
+console.log(linkedList);
+console.log(linkedList.remove());
+//linkedList.search('function');
+console.log(linkedList);
+//console.log(newNodo);
+
+// piezan head como null', function
+// expect(linkedList.hasOwnProperty('head')).toBe(true);
+// expect(linkedList.head).toBeFalsy();
+// expect(linkedList.remove()).toBeFalsy();
+
+
+
 
 /*
 Implementar la clase HashTable.
@@ -30,13 +120,51 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+    this.numBuckets = slots || 35;
+    this.buckets = new Array(this.numBuckets)
+};
+
+HashTable.prototype.hash = function (key) {
+    let sum = 0;
+
+    for (let i = 0; i < key.length; i++) {
+        sum += key.charCodeAt(i);
+    };
+
+    return sum % this.numBuckets;
+};
+
+HashTable.prototype.set = function (key, value) {
+    if (typeof key !== 'string') {
+        throw TypeError('Keys must be strings');
+    }
+    var slot = this.hash(key);
+
+    if (this.buckets[slot] === undefined) {
+        // vamos a crear una substructura
+        this.buckets[slot] = {};
+    }
+
+    this.buckets[slot][key] = value;
+};
+
+HashTable.prototype.get = function (key) {
+    var slot = this.hash(key);
+    return this.buckets[slot][key];  // si no encuentra devuelve undefined
+};
+// repasar como aceder a elemento de un objeto
+
+HashTable.prototype.hasKey = function (key) {
+    var slot = this.hash(key);
+    return this.buckets[slot].hasOwnProperty(key); // buscamos si tiene esa propiedad
+};
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
 module.exports = {
-  Node,
-  LinkedList,
-  HashTable,
+    Node,
+    LinkedList,
+    HashTable,
 };
