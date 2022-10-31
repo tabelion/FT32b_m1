@@ -120,16 +120,16 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {
+function HashTable(slots) {
     this.numBuckets = slots || 35;
     this.buckets = new Array(this.numBuckets)
 };
 
-HashTable.prototype.hash = function (key) {
+HashTable.prototype.hash = function (string) {
     let sum = 0;
 
-    for (let i = 0; i < key.length; i++) {
-        sum += key.charCodeAt(i);
+    for (let i = 0; i < string.length; i++) {
+        sum += string.charCodeAt(i);
     };
 
     return sum % this.numBuckets;
@@ -139,27 +139,31 @@ HashTable.prototype.set = function (key, value) {
     if (typeof key !== 'string') {
         throw TypeError('Keys must be strings');
     }
-    var slot = this.hash(key);
+    var index = this.hash(key);
 
-    if (this.buckets[slot] === undefined) {
-        // vamos a crear una substructura
-        this.buckets[slot] = {};
+    if (this.buckets[index] === undefined) {
+        // vamos a crear una substructura, en este caso un objeto
+        this.buckets[index] = {};
     }
 
-    this.buckets[slot][key] = value;
+    this.buckets[index][key] = value;
 };
 
 HashTable.prototype.get = function (key) {
-    var slot = this.hash(key);
-    return this.buckets[slot][key];  // si no encuentra devuelve undefined
+    var index = this.hash(key);
+    return this.buckets[index][key];  // si no encuentra devuelve undefined
 };
 // repasar como aceder a elemento de un objeto
 
 HashTable.prototype.hasKey = function (key) {
+    //! slot o indice o casillero o index
     var slot = this.hash(key);
     return this.buckets[slot].hasOwnProperty(key); // buscamos si tiene esa propiedad
 };
 
+console.log('foo'.charCodeAt(1));
+var newHT = new HashTable(35);
+console.log(newHT.hash("this is a key"));
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
