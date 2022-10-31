@@ -2,7 +2,7 @@
 
 var sayHello = 'Hello';
 
-function     person() {
+function person() {
     var first = 'David';
     var last = 'Shariff';
         
@@ -12,5 +12,8 @@ function     person() {
     function lastName() {
         return last;
     } 
-    alert(sayHello + ' ' + firstName() + ' ' + lastName());
+    //alert(sayHello + ' ' + firstName() + ' ' + lastName());
+    return sayHello + ' ' + firstName() + ' ' + lastName();
 }
+
+console.log(person());
