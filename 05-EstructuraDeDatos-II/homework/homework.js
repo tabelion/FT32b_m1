@@ -156,7 +156,7 @@ HashTable.prototype.get = function (key) {
 // repasar como aceder a elemento de un objeto
 
 HashTable.prototype.hasKey = function (key) {
-    //! slot o indice o casillero o index
+    //! slot o indice o casillero o index o buckets
     var slot = this.hash(key);
     return this.buckets[slot].hasOwnProperty(key); // buscamos si tiene esa propiedad
 };
