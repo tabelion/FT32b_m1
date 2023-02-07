@@ -2,7 +2,7 @@
 
 function BinarioADecimal(num) {
     // tu codigo aca
-        // let num = "11101";
+    // ! let num = "11101";
     let canti = num.length - 1;
     let calcu = 0;
     
